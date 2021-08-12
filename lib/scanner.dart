@@ -9,11 +9,18 @@ import 'package:flutter/material.dart';
 import 'jsqr.dart';
 import 'media.dart';
 
+typedef void OnScann(String? code);
+
 class Scanner extends StatefulWidget {
   /// clickToCapture to show a button to capture a Data URL for the image
   final bool clickToCapture;
+  final OnScann? onScann;
 
-  const Scanner({this.clickToCapture = false, key}) : super(key: key);
+  const Scanner({
+    this.onScann,
+    this.clickToCapture = false,
+    key,
+  }) : super(key: key);
 
   @override
   _ScannerState createState() => _ScannerState();
@@ -200,7 +207,8 @@ class _ScannerState extends State<Scanner> {
     if (code != null) {
       print(code.data);
       this.code = code.data;
-      Navigator.pop(context, this.code);
+      // Navigator.pop(context, this.code);
+      if (widget.onScann != null) widget.onScann!(this.code);
       return this.code;
     } else {
       Timer(Duration(milliseconds: 500), () {
@@ -263,7 +271,8 @@ class _ScannerState extends State<Scanner> {
           onPressed: () async {
             var imgUrl = await _captureImage();
             print("Image URL: $imgUrl");
-            Navigator.pop(context, imgUrl);
+            if (widget.onScann != null) widget.onScann!(imgUrl);
+            // Navigator.pop(context, imgUrl);
           },
         ),
     ]);
