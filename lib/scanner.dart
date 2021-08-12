@@ -238,7 +238,16 @@ class _ScannerState extends State<Scanner> {
       return Center(child: Text(_errorMsg!));
     }
     if (_localStream == null) {
-      return Text("Loading...");
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).primaryColor,
+            ),
+          ),
+        ),
+      );
     }
     return Column(children: [
       Expanded(
